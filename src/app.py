@@ -1,13 +1,18 @@
 from flask import Flask
-from config import Config
+from config import Config, TeleConfig
+import telebot
 
-app = Flask(__name__)
-app.config.from_object(Config)
+server = Flask(__name__)
 
-@app.route("/")
+botEntitled = telebot.Telebot(TeleConfig.ENTITLED_TOKEN)
+botVara = telebot.TeleBot(TeleConfig.VARA_TOKEN)
+
+server.config.from_object(Config)
+
+@server.route("/")
 def hello():
     return "Hello world"
 
 if __name__ == "__main__":
-    app.debug=Config.DEBUG
-    app.run(host='0.0.0.0', port=5000)
+    server.debug=Config.DEBUG
+    server.run(host='0.0.0.0', port=5000)
