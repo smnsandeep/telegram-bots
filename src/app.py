@@ -11,7 +11,7 @@ server.config.from_object(Config)
 @server.route('/', methods=['POST'])
 def webhook():
     botEntitled.remove_webhook()
-    #botEntitled.set_webhook(TeleConfig.ENTITLED_WEBHOOK+TeleConfig.ENTITLED_TOKEN)
+    botEntitled.set_webhook(TeleConfig.ENTITLED_WEBHOOK+TeleConfig.ENTITLED_TOKEN)
     print(request)
     return "!", 200
     
