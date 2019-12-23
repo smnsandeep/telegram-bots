@@ -22,7 +22,7 @@ def getMessage():
 
 @butlerBot.message_handler(commands=['start'])
 def start(message):
-    server.logger.debug("start message -> " + message)
+    server.logger.debug("start message -> from" + message.from_user.username + " chat_id -> "+ message.chat.id)
     butlerBot.send_message(message.chat.id, Constants.greeting.format(message.from_user.first_name))
 
 @butlerBot.message_handler(commands=['help'])
