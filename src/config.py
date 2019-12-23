@@ -10,3 +10,6 @@ class Config(object):
 class TeleConfig(object):
     ENTITLED_TOKEN = os.getenv("ENTITLEMENT_BOT_API")
     VARA_TOKEN = os.getenv("VARA_BOT_API")
+
+    ENTITLED_WEBHOOK = "https://telegram-per-bot.herokuapp.com/"
+    VARA_WEBHOOK = ""
