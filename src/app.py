@@ -28,8 +28,8 @@ def start(message):
 @butlerBot.message_handler(commands=['help'])
 def help(message):
     server.logger.debug("start message -> from" + message.from_user.username + " chat_id -> "+ str(message.chat.id))
-    message = Constants.help
-    butlerBot.send_message(message.chat.id, message)
+    returnMessage = Constants.help
+    butlerBot.send_message(message.chat.id, returnMessage)
 
 if __name__ == "__main__":
     server.debug=True
