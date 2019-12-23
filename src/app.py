@@ -11,7 +11,7 @@ server.config.from_object(Config)
 @server.route('/', methods=['POST'])
 def webhook():
     print(request)
-    return "!", 200
+    return "WTF do you want?",401
     
 @server.route('/'+TeleConfig.BOT_TOKEN, methods=['POST'])
 def getMessage():
@@ -20,7 +20,12 @@ def getMessage():
 
 @butlerBot.message_handler(commands=['start'])
 def start(message):
-    butlerBot.send_message(message.chat.id, Constants.greeting.format(message.user.first_name))
+    butlerBot.send_message(message.chat.id, Constants.greeting.format(message.from_user.first_name))
+
+@butlerBot.message_handler(commands=['help'])
+def help(message):
+    message = Constants.help
+    butlerBot.send_message(message.chat.id, message)
 
 if __name__ == "__main__":
     server.debug=True
