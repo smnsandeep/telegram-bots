@@ -16,18 +16,18 @@ def webhook():
 @server.route('/'+TeleConfig.BOT_TOKEN, methods=['POST'])
 def getMessage():
     requestString = request.stream.read().decode("utf-8")
-    server.logger.debug("Incoming request -> " + requestString)
+    server.logger.debug(f"Incoming message -> {requestString}")
     butlerBot.process_new_updates([telebot.types.Update.de_json(requestString)])
     return "!", 200
 
 @butlerBot.message_handler(commands=['start'])
 def start(message):
-    server.logger.debug("start message -> from" + message.from_user.username + " chat_id -> "+ str(message.chat.id))
+    server.logger.debug(f"start message -> from {message.from_user.username} and chat_id -> {message.chat.id}")
     butlerBot.send_message(message.chat.id, Constants.greeting.format(message.from_user.first_name))
 
 @butlerBot.message_handler(commands=['help'])
 def help(message):
-    server.logger.debug("start message -> from" + message.from_user.username + " chat_id -> "+ str(message.chat.id))
+    server.logger.debug(f"start message -> from {message.from_user.username} and chat_id -> {message.chat.id}")
     returnMessage = Constants.help
     butlerBot.send_message(message.chat.id, returnMessage)
 
