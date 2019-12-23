@@ -11,5 +11,5 @@ class AppConfig(object):
     PORT = os.environ.get('PORT', 5000)
 
 class TeleConfig(object):
-    BOT_TOKEN = os.environ.get("BUTLER_BOT_API")
-    WEBHOOK = "https://telegram-per-bot.herokuapp.com/"+BOT_TOKEN
+    BOT_TOKEN = os.getenv("BUTLER_BOT_API", " ")
+    #WEBHOOK = "https://telegram-per-bot.herokuapp.com/"+BOT_TOKEN
