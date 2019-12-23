@@ -15,8 +15,9 @@ def webhook():
     
 @server.route('/'+TeleConfig.BOT_TOKEN, methods=['POST'])
 def getMessage():
-    server.logger.debug("Incoming request -> " + request)
-    butlerBot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
+    requestString = request.stream.read().decode("utf-8")
+    server.logger.debug("Incoming request -> " + requestString)
+    butlerBot.process_new_updates([telebot.types.Update.de_json(requestString)])
     return "!", 200
 
 @butlerBot.message_handler(commands=['start'])
