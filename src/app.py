@@ -2,7 +2,7 @@ from flask import Flask, request
 from config import Config, TeleConfig, AppConfig
 import telebot
 from constants import Constants
-import types
+import telebot.types as types
 
 butlerBot = telebot.TeleBot(TeleConfig.BOT_TOKEN)
 
