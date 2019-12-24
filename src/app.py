@@ -43,14 +43,6 @@ def showKeyboard(message):
     markup.add(itembtn1, itembtn2, itembtn3)
     butlerBot.send_message(message.chat.id, "Choose one:", reply_markup=markup)
 
-# used to send results when you type test
-@butlerBot.inline_handler(lambda query: query.query == '')
-def query_test(inline_query):
-    server.logger.debug(f"test query -> from {inline_query.from_user.first_name} and the query is {inline_query.query}")
-    r1 = types.InlineQueryResultArticle('1', 'Result 1', types.InputTextMessageContent('Result1'))
-    r2 = types.InlineQueryResultArticle('2', 'Result 2', types.InputTextMessageContent('Result2'))
-    butlerBot.answer_inline_query(inline_query.id, [r1, r2])
-
 if __name__ == "__main__":
     server.debug=True
     server.run(host='0.0.0.0', port=AppConfig.PORT)
