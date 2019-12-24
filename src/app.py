@@ -3,6 +3,8 @@ from config import Config, TeleConfig, AppConfig
 import telebot
 from constants import Constants
 import telebot.types as types
+import commandsHandler
+import inlineHandler
 
 butlerBot = telebot.TeleBot(TeleConfig.BOT_TOKEN)
 
@@ -32,7 +34,17 @@ def help(message):
     returnMessage = Constants.help
     butlerBot.send_message(message.chat.id, returnMessage)
 
-@butlerBot.inline_handler(lambda query: query.query == 'test')
+@butlerBot.message_handler(commands=['showKeyboard'])
+def showKeyboard(message):
+    markup = types.ReplyKeyboardMarkup(one_time_keyboard=True,row_width=2)
+    itembtn1 = types.KeyboardButton('a')
+    itembtn2 = types.KeyboardButton('v')
+    itembtn3 = types.KeyboardButton('d')
+    markup.add(itembtn1, itembtn2, itembtn3)
+    butlerBot.send_message(message.chat.id, "Choose one:", reply_markup=markup)
+
+# used to send results when you type test
+@butlerBot.inline_handler(lambda query: query.query == '')
 def query_test(inline_query):
     server.logger.debug(f"test query -> from {inline_query.from_user.first_name} and the query is {inline_query.query}")
     r1 = types.InlineQueryResultArticle('1', 'Result 1', types.InputTextMessageContent('Result1'))
