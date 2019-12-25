@@ -21,6 +21,7 @@ def getMessage():
     requestString = request.stream.read().decode("utf-8")
     server.logger.debug(f"Incoming message -> {requestString}")
     butlerBot.process_new_updates([telebot.types.Update.de_json(requestString)])
+    
     return "!", 200
 
 @butlerBot.message_handler(commands=['start'])
@@ -34,14 +35,22 @@ def help(message):
     returnMessage = Constants.help
     butlerBot.send_message(message.chat.id, returnMessage)
 
-@butlerBot.message_handler(commands=['showKeyboard'])
+@butlerBot.message_handler(func=lambda message: message.text.lower()=="send noodz")
+def sendNoodz(message):
+    server.logger.debug(f"start message -> from {message.from_user.username} and chat_id -> {message.chat.id}")
+    pic = open(TeleConfig().getRandomNoodle(), 'rb')
+    butlerBot.send_photo(message.chat.id, pic, reply_to_message_id=message.message_id)
+
+""" @butlerBot.message_handler(commands=['showKeyboard'])
 def showKeyboard(message):
     markup = types.ReplyKeyboardMarkup(one_time_keyboard=True,row_width=2)
     itembtn1 = types.KeyboardButton('a')
     itembtn2 = types.KeyboardButton('v')
     itembtn3 = types.KeyboardButton('d')
     markup.add(itembtn1, itembtn2, itembtn3)
-    butlerBot.send_message(message.chat.id, "Choose one:", reply_markup=markup)
+    butlerBot.send_message(message.chat.id, "Choose one:", reply_markup=markup) """
+
+
 
 if __name__ == "__main__":
     server.debug=True
