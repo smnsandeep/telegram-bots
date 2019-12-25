@@ -35,6 +35,7 @@ def help(message):
     returnMessage = Constants.help
     butlerBot.send_message(message.chat.id, returnMessage)
 
+@butlerBot.message_handler(commands=['sendnoodz'])
 @butlerBot.message_handler(func=lambda message: message.text.lower()=="send noodz")
 def sendNoodz(message):
     server.logger.debug(f"start message -> from {message.from_user.username} and chat_id -> {message.chat.id}")
