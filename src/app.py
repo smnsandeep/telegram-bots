@@ -52,6 +52,31 @@ def roast(message):
     else:
         butlerBot.send_message(message.chat.id, insult)
 
+@butlerBot.message_handler(commands=['yomama', 'chucknorris'])
+def yomama(message):
+    server.logger.debug(f"start message -> from {message.from_user.username} and chat_id -> {message.chat.id}")
+    if('yomama' in message.text):
+        insult = apiCalls.yoMomma('yomama')
+    elif('chucknorris' in message.text):
+        insult = apiCalls.yoMomma('chucknorris')
+
+
+    if(message.reply_to_message != None):
+        butlerBot.send_message(message.chat.id, insult, reply_to_message_id=message.reply_to_message.message_id)
+    else:
+        butlerBot.send_message(message.chat.id, insult)
+
+@butlerBot.message_handler(commands=['adjective'])
+def yomama(message):
+    server.logger.debug(f"start message -> from {message.from_user.username} and chat_id -> {message.chat.id}")
+    adjective = apiCalls.adjective()
+    if(message.reply_to_message != None):
+        butlerBot.send_message(message.chat.id, adjective, reply_to_message_id=message.reply_to_message.message_id)
+    else:
+        butlerBot.send_message(message.chat.id, adjective)
+
+
+##################-------------- INLINE ------------------ #############3
 @butlerBot.inline_handler(func=lambda query: query.query == "roast")
 def roast_inline(query):
     server.logger.debug(f"inline query insult -> from {query.from_user.username}")

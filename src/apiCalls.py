@@ -39,3 +39,29 @@ def generateRoast():
         return html.unescape(roast)
     else:
         return f"Error failed {response.status_code}: Please ask @grumpyLad to check logs."
+
+
+def yoMomma(jokeType):
+    """ joeType can be one of yomama, chucknorris, dadjoke or random """
+    url = "https://jokes.guyliangilsing.me/retrieveJokes.php"
+    params = {
+        'type':jokeType
+    }
+    response = requests.get(url, params)
+    if(response.status_code == 200):
+        roast = response.json()['joke']
+        return html.unescape(roast)
+    else:
+        return f"Error failed {response.status_code}: Please ask @grumpyLad to check logs."
+
+
+def adjective():
+    url = "https://insult.mattbas.org/api/adjective"
+
+    response = requests.get(url)
+    if(response.status_code == 200):
+        roast = response.text
+        return html.unescape(roast)
+    else:
+        return f"Error failed {response.status_code}: Please ask @grumpyLad to check logs."
+    

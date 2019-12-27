@@ -5,4 +5,7 @@ class Constants(object):
     /help - Show this help
     /sendnoodz - See a random nood
     /roast - Roast your mates
+    /yomama - Yo Mama jokes
+    /chucknorris - Chuck norris jokes
+    /adjective - GIves you a nice adjective for the person
     '''
