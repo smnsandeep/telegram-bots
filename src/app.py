@@ -37,21 +37,27 @@ def help(message):
     butlerBot.send_message(message.chat.id, returnMessage)
 
 @butlerBot.message_handler(commands=['sendnoodz'])
-@butlerBot.message_handler(func=lambda message: message.text.lower()=="send noodz")
+@butlerBot.message_handler(func=lambda message: message.text.lower()=="send noodz" if isinstance(message.text, str) else ' ')
 def sendNoodz(message):
     server.logger.debug(f"start message -> from {message.from_user.username} and chat_id -> {message.chat.id}")
-    #pic = open(TeleConfig().getRandomNoodle(), 'rb')
     pic = apiCalls.getRandomImage("Noodles")
     butlerBot.send_photo(message.chat.id, pic, reply_to_message_id=message.message_id)
 
-""" @butlerBot.message_handler(commands=['showKeyboard'])
-def showKeyboard(message):
-    markup = types.ReplyKeyboardMarkup(one_time_keyboard=True,row_width=2)
-    itembtn1 = types.KeyboardButton('a')
-    itembtn2 = types.KeyboardButton('v')
-    itembtn3 = types.KeyboardButton('d')
-    markup.add(itembtn1, itembtn2, itembtn3)
-    butlerBot.send_message(message.chat.id, "Choose one:", reply_markup=markup) """
+@butlerBot.message_handler(commands=['roast'])
+def roast(message):
+    server.logger.debug(f"start message -> from {message.from_user.username} and chat_id -> {message.chat.id}")
+    insult = apiCalls.generateRoast()
+    if(message.reply_to_message != None):
+        butlerBot.send_message(message.chat.id, insult, reply_to_message_id=message.reply_to_message.message_id)
+    else:
+        butlerBot.send_message(message.chat.id, insult)
+
+@butlerBot.inline_handler(func=lambda query: query.query == "roast")
+def roast_inline(query):
+    server.logger.debug(f"inline query insult -> from {query.from_user.username}")
+    insult = apiCalls.generateRoast()
+    result = types.InlineQueryResultArticle('1', "Roast", types.InputTextMessageContent(insult))
+    butlerBot.answer_inline_query(query.id, [result])
 
 
 
