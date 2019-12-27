@@ -3,4 +3,5 @@ class Constants(object):
     help = '''This bot can do the following right now:
     /start - start this bot
     /help - show this help
+    /sendnoodz - sends you random noodz
     '''

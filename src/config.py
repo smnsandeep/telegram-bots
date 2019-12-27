@@ -14,10 +14,3 @@ class AppConfig(object):
 class TeleConfig(object):
     BOT_TOKEN = os.getenv("BUTLER_BOT_API", " ")
     RES_PATH = os.path.join(os.getcwd(), "res")
-    print(RES_PATH)
-    #WEBHOOK = "https://telegram-per-bot.herokuapp.com/"+BOT_TOKEN
-
-    def getRandomNoodle(self):
-        randomNumber = random.randrange(1,16,1)
-        fileName = f"nood{randomNumber}.jpg"
-        return os.path.join(self.RES_PATH, fileName)

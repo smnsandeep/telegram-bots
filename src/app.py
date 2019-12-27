@@ -5,6 +5,7 @@ from constants import Constants
 import telebot.types as types
 import commandsHandler
 import inlineHandler
+import apiCalls
 
 butlerBot = telebot.TeleBot(TeleConfig.BOT_TOKEN)
 
@@ -39,7 +40,8 @@ def help(message):
 @butlerBot.message_handler(func=lambda message: message.text.lower()=="send noodz")
 def sendNoodz(message):
     server.logger.debug(f"start message -> from {message.from_user.username} and chat_id -> {message.chat.id}")
-    pic = open(TeleConfig().getRandomNoodle(), 'rb')
+    #pic = open(TeleConfig().getRandomNoodle(), 'rb')
+    pic = apiCalls.getRandomImage("Noodles")
     butlerBot.send_photo(message.chat.id, pic, reply_to_message_id=message.message_id)
 
 """ @butlerBot.message_handler(commands=['showKeyboard'])
