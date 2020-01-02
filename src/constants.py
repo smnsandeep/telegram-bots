@@ -8,7 +8,10 @@ class Constants(object):
     /yomama - Yo Mama jokes
     /chucknorris - Chuck norris jokes
     /adjective - GIves you a nice adjective for the person
-    /ban - Ban the member who sent the message you replied to
+    /ban - Reply to a message to ban that user
+    /tempban - Reply to a message with /tempban x where x is unit of time. Valid units of time are:
+    minutes, hours, and days. Example - /ban 15 minutes, /ban 12 hours, /ban 30 days
     '''
     banAdmin = "I can not ban an admin."
-    noUserBan = "I need a user to ban. Reply to one of their message or tag them with /ban to ban user"
+    noUserBan = "I need a user to ban. Reply to one of their message"
+    wrongTimeFormat = "Please use /help to see the valid formats"

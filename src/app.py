@@ -3,9 +3,8 @@ from config import Config, TeleConfig, AppConfig
 import telebot
 from constants import Constants
 import telebot.types as types
-import commandsHandler
-import inlineHandler
 import apiCalls
+import datetime
 
 butlerBot = telebot.TeleBot(TeleConfig.BOT_TOKEN)
 
@@ -75,7 +74,7 @@ def yomama(message):
     else:
         butlerBot.send_message(message.chat.id, adjective)
 
-@butlerBot.message_handler(commands=['bant'])
+@butlerBot.message_handler(commands=['ban'])
 def ban(message):
     server.logger.debug(f"start message -> from {message.from_user.username} and chat_id -> {message.chat.id}")
     admins = butlerBot.get_chat_administrators(message.chat.id)
@@ -86,9 +85,10 @@ def ban(message):
                 butlerBot.send_message(message.chat.id, Constants.banAdmin, reply_to_message_id=message.reply_to_message.message_id)
                 return
         butlerBot.kick_chat_member(message.chat.id, currUserId)
-    elif message.text.split()[1] is not None:
-        userId = message.text.split()[1]
-        user = butlerBot.get_chat_member(chat_id=message.chat.id,user_id= userId)
+    """ elif len(message.text.split()) == 2:
+        userId = message.text.split()[1].replace("@", "")
+        print(message.chat.id)
+        user = butlerBot.get_chat_member(chat_id=message.chat.id, user_id= userId)
         currUserId = user.id
         print(currUserId)
         if currUserId is not None:
@@ -98,7 +98,42 @@ def ban(message):
                     return
             butlerBot.kick_chat_member(message.chat.id, currUserId)
     else:
-        butlerBot.send_message(message.chat.id, Constants.noUserBan, reply_to_message_id=message.message_id)
+        butlerBot.send_message(message.chat.id, Constants.noUserBan, reply_to_message_id=message.message_id) """
+
+@butlerBot.message_handler(commands=['tempban'])
+def tempban(message):
+    server.logger.debug(f"start message -> from {message.from_user.username} and chat_id -> {message.chat.id}")
+    admins = butlerBot.get_chat_administrators(message.chat.id)
+    if message.reply_to_message is not None:
+        currUserId = message.reply_to_message.from_user.id
+        for admin in admins:
+            if admin.user.id == currUserId:
+                butlerBot.send_message(message.chat.id, Constants.banAdmin, reply_to_message_id=message.reply_to_message.message_id)
+                return
+        currTime = datetime.datetime.now()
+        timestamp = datetime.datetime.timestamp(currTime)
+        
+        timetoban = message.text.split()
+        numTime = int(timetoban[1])
+        timeUnit = timetoban[2]
+        
+        if(numTime is None or timeUnit is None):
+            butlerBot.send_message(message.chat.id, Constants.wrongTimeFormat, reply_to_message_id=message.reply_to_message.message_id)
+        
+        if(timeUnit == "minutes"):
+            new = datetime.datetime.fromtimestamp(timestamp) + datetime.timedelta(minutes=numTime)
+            butlerBot.kick_chat_member(message.chat.id, currUserId, until_date=new.timestamp())
+        elif(timeUnit == "hours"):
+            new = datetime.datetime.fromtimestamp(timestamp) + datetime.timedelta(hours=numTime)
+            butlerBot.kick_chat_member(message.chat.id, currUserId, until_date=new.timestamp())
+            pass
+        elif(timeUnit == "days"):
+            new = datetime.datetime.fromtimestamp(timestamp) + datetime.timedelta(days=numTime)
+            print(new.timestamp())
+            butlerBot.kick_chat_member(message.chat.id, currUserId, until_date=new.timestamp())
+            pass
+        else:
+            butlerBot.send_message(message.chat.id, Constants.wrongTimeFormat, reply_to_message_id=message.reply_to_message.message_id)
 
 ##################-------------- INLINE ------------------ #############3
 @butlerBot.inline_handler(func=lambda query: query.query == "roast")
