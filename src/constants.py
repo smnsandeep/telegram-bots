@@ -8,4 +8,7 @@ class Constants(object):
     /yomama - Yo Mama jokes
     /chucknorris - Chuck norris jokes
     /adjective - GIves you a nice adjective for the person
+    /ban - Ban the member who sent the message you replied to
     '''
+    banAdmin = "I can not ban an admin."
+    noUserBan = "I need a user to ban. Reply to one of their message or tag them with /ban to ban user"

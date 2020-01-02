@@ -75,6 +75,30 @@ def yomama(message):
     else:
         butlerBot.send_message(message.chat.id, adjective)
 
+@butlerBot.message_handler(commands=['bant'])
+def ban(message):
+    server.logger.debug(f"start message -> from {message.from_user.username} and chat_id -> {message.chat.id}")
+    admins = butlerBot.get_chat_administrators(message.chat.id)
+    if message.reply_to_message is not None:
+        currUserId = message.reply_to_message.from_user.id
+        for admin in admins:
+            if admin.user.id == currUserId:
+                butlerBot.send_message(message.chat.id, Constants.banAdmin, reply_to_message_id=message.reply_to_message.message_id)
+                return
+        butlerBot.kick_chat_member(message.chat.id, currUserId)
+    elif message.text.split()[1] is not None:
+        userId = message.text.split()[1]
+        user = butlerBot.get_chat_member(chat_id=message.chat.id,user_id= userId)
+        currUserId = user.id
+        print(currUserId)
+        if currUserId is not None:
+            for admin in admins:
+                if admin.user.id == currUserId:
+                    butlerBot.send_message(message.chat.id, Constants.banAdmin, reply_to_message_id=message.message_id)
+                    return
+            butlerBot.kick_chat_member(message.chat.id, currUserId)
+    else:
+        butlerBot.send_message(message.chat.id, Constants.noUserBan, reply_to_message_id=message.message_id)
 
 ##################-------------- INLINE ------------------ #############3
 @butlerBot.inline_handler(func=lambda query: query.query == "roast")
