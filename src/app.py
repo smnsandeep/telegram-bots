@@ -42,14 +42,14 @@ def sendNoodz(message):
     pic = apiCalls.getRandomImage("Noodles")
     butlerBot.send_photo(message.chat.id, pic, reply_to_message_id=message.message_id)
 
-""" @butlerBot.message_handler(commands=['roast'])
+@butlerBot.message_handler(commands=['roast'])
 def roast(message):
     server.logger.debug(f"start message -> from {message.from_user.username} and chat_id -> {message.chat.id}")
     insult = apiCalls.generateRoast()
     if(message.reply_to_message != None):
         butlerBot.send_message(message.chat.id, insult, reply_to_message_id=message.reply_to_message.message_id)
     else:
-        butlerBot.send_message(message.chat.id, insult) """
+        butlerBot.send_message(message.chat.id, insult)
 
 @butlerBot.message_handler(commands=['yomama', 'chucknorris'])
 def yomama(message):
