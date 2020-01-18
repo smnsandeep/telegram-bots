@@ -143,7 +143,12 @@ def roast_inline(query):
     result = types.InlineQueryResultArticle('1', "Roast", types.InputTextMessageContent(insult))
     butlerBot.answer_inline_query(query.id, [result])
 
-
+@butlerBot.message_handler(commands=['adjective'])
+def yomama(message):
+    server.logger.debug(f"inline query insult -> from {query.from_user.username}")
+    insult = apiCalls.adjective()
+    result = types.InlineQueryResultArticle('1', "Roast", types.InputTextMessageContent(insult))
+    butlerBot.answer_inline_query(query.id, [result])
 
 if __name__ == "__main__":
     server.debug=True
