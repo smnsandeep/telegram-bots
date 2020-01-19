@@ -85,20 +85,6 @@ def ban(message):
                 butlerBot.send_message(message.chat.id, Constants.banAdmin, reply_to_message_id=message.reply_to_message.message_id)
                 return
         butlerBot.kick_chat_member(message.chat.id, currUserId)
-    """ elif len(message.text.split()) == 2:
-        userId = message.text.split()[1].replace("@", "")
-        print(message.chat.id)
-        user = butlerBot.get_chat_member(chat_id=message.chat.id, user_id= userId)
-        currUserId = user.id
-        print(currUserId)
-        if currUserId is not None:
-            for admin in admins:
-                if admin.user.id == currUserId:
-                    butlerBot.send_message(message.chat.id, Constants.banAdmin, reply_to_message_id=message.message_id)
-                    return
-            butlerBot.kick_chat_member(message.chat.id, currUserId)
-    else:
-        butlerBot.send_message(message.chat.id, Constants.noUserBan, reply_to_message_id=message.message_id) """
 
 @butlerBot.message_handler(commands=['tempban'])
 def tempban(message):
