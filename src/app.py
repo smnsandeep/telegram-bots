@@ -124,14 +124,14 @@ def tempban(message):
 ##################-------------- INLINE ------------------ #############3
 @butlerBot.inline_handler(func=lambda query: query.query == "roast")
 def roast_inline(query):
-    server.logger.debug(f"inline query insult -> from {query.from_user.username}")
+    server.logger.debug(f"inline roast query insult -> from {query.from_user.username}")
     insult = apiCalls.generateRoast()
     result = types.InlineQueryResultArticle('1', "Roast", types.InputTextMessageContent(insult))
     butlerBot.answer_inline_query(query.id, [result])
 
 @butlerBot.message_handler(commands=['adjective'])
 def yomama(message):
-    server.logger.debug(f"inline query insult -> from {query.from_user.username}")
+    server.logger.debug(f"inline adjective query insult -> from {query.from_user.username}")
     insult = apiCalls.adjective()
     result = types.InlineQueryResultArticle('1', "Adjective", types.InputTextMessageContent(insult))
     butlerBot.answer_inline_query(query.id, [result])
