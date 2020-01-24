@@ -14,7 +14,7 @@ server.config.from_object(Config)
 @server.route('/', methods=['POST'])
 def webhook():
     print(request)
-    return "You are not authorized to visit this page. Your IP has been logged and this incident will be reported",401
+    return "You are not authorized to visit this page. Your IP has been logged and this incident will be reported. hihihihi",401
     
 @server.route('/'+TeleConfig.BOT_TOKEN, methods=['POST'])
 def getMessage():
