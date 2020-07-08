@@ -5,6 +5,7 @@ from constants import Constants
 import telebot.types as types
 import apiCalls
 import datetime
+import requests
 
 butlerBot = telebot.TeleBot(TeleConfig.BOT_TOKEN)
 
@@ -34,6 +35,24 @@ def help(message):
     server.logger.debug(f"start message -> from {message.from_user.username} and chat_id -> {message.chat.id}")
     returnMessage = Constants.help
     butlerBot.send_message(message.chat.id, returnMessage)
+
+@butlerBot.message_handler(commands=['spy_picture'])
+def spy(message):
+    server.logger.debug(f"start message -> from {message.from_user.username} and chat_id -> {message.chat.id}")
+    if message.from_user.username=='steffistelegram':
+        butlerBot.send_message(message.chat.id, "Now you don't get it until master tells you")
+    if message.from_user.username=='grumpyLad' and message.chat.id==-1001381102531:
+        pic = requests.get(TeleConfig.SPY_URL+'p').content
+        butlerBot.send_photo(message.chat.id, pic, reply_to_message_id=message.message_id)
+
+@butlerBot.message_handler(commands=['spy_video'])
+def spy(message):
+    server.logger.debug(f"start message -> from {message.from_user.username} and chat_id -> {message.chat.id}")
+    if message.from_user.username=='steffistelegram':
+        butlerBot.send_message(message.chat.id, "Now you don't get it until master tells you")
+    if message.from_user.username=='grumpyLad' and message.chat.id==-1001381102531:
+        vid = requests.get(TeleConfig.SPY_URL+'v').content
+        butlerBot.send_video(message.chat.id, vid, reply_to_message_id=message.message_id)
 
 """ @butlerBot.message_handler(commands=['sendnoodz'])
 @butlerBot.message_handler(func=lambda message: message.text.lower()=="send noodz" if isinstance(message.text, str) else ' ')
