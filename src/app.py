@@ -14,7 +14,7 @@ server.config.from_object(Config)
 @server.route('/', methods=['POST'])
 def webhook():
     print(request)
-    return "Unauthorised access.",401
+    return "Unauthorised access.",200
     
 @server.route('/'+TeleConfig.BOT_TOKEN, methods=['POST'])
 def getMessage():
@@ -35,7 +35,7 @@ def help(message):
     returnMessage = Constants.help
     butlerBot.send_message(message.chat.id, returnMessage)
 
-@butlerBot.message_handler(commands=['sendnoodz'])
+""" @butlerBot.message_handler(commands=['sendnoodz'])
 @butlerBot.message_handler(func=lambda message: message.text.lower()=="send noodz" if isinstance(message.text, str) else ' ')
 def sendNoodz(message):
     server.logger.debug(f"start message -> from {message.from_user.username} and chat_id -> {message.chat.id}")
@@ -72,7 +72,7 @@ def yomama(message):
     if(message.reply_to_message != None):
         butlerBot.send_message(message.chat.id, adjective, reply_to_message_id=message.reply_to_message.message_id)
     else:
-        butlerBot.send_message(message.chat.id, adjective)
+        butlerBot.send_message(message.chat.id, adjective) """
 
 @butlerBot.message_handler(commands=['ban'])
 def ban(message):
@@ -130,7 +130,7 @@ def roast_inline(query):
     butlerBot.answer_inline_query(query.id, [result])
 
 @butlerBot.message_handler(commands=['adjective'])
-def yomama(message):
+def yomama(query):
     server.logger.debug(f"inline adjective query insult -> from {query.from_user.username}")
     insult = apiCalls.adjective()
     result = types.InlineQueryResultArticle('1', "Adjective", types.InputTextMessageContent(insult))
