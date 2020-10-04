@@ -52,6 +52,7 @@ def spy(message):
         butlerBot.send_message(message.chat.id, "Now you don't get it until master tells you")
     if message.from_user.username=='grumpyLad' and message.chat.id==-1001381102531:
         vid = requests.get(TeleConfig.SPY_URL+'v').content
+        butlerBot.send_message(message.chat.id, "Sending video", reply_to_message_id=message.message_id)
         butlerBot.send_video(message.chat.id, vid, reply_to_message_id=message.message_id)
 
 """ @butlerBot.message_handler(commands=['sendnoodz'])
