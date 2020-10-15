@@ -97,14 +97,15 @@ def yomama(message):
 @butlerBot.message_handler(commands=['ban'])
 def ban(message):
     server.logger.debug(f"start message -> from {message.from_user.username} and chat_id -> {message.chat.id}")
-    admins = butlerBot.get_chat_administrators(message.chat.id)
+    butlerBot.send_message(message.chat.id, "Go away you faggot!!")
+    """ admins = butlerBot.get_chat_administrators(message.chat.id)
     if message.reply_to_message is not None:
         currUserId = message.reply_to_message.from_user.id
         for admin in admins:
             if admin.user.id == currUserId:
                 butlerBot.send_message(message.chat.id, Constants.banAdmin, reply_to_message_id=message.reply_to_message.message_id)
                 return
-        butlerBot.kick_chat_member(message.chat.id, currUserId)
+        butlerBot.kick_chat_member(message.chat.id, currUserId) """
 
 @butlerBot.message_handler(commands=['tempban'])
 def tempban(message):
