@@ -58,7 +58,7 @@ def spy(message):
 @butlerBot.message_handler(commands=['getFitbitStat'])
 def getFitbitStat(message):
     server.logger.debug(f"start message -> from {message.from_user.username} and chat_id -> {message.chat.id}")
-    if message.from_user.username=='steffistelegram' or message.from_user.username=='grumpyLad':
+    if message.from_user.username=='steffistelegram' or message.from_user.username=='grumpylad':
         result = apiCalls.callFitbitGet()
         butlerBot.send_message(message.chat.id, "```"+ result +"```", reply_to_message_id=message.message_id)
     else:
