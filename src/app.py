@@ -55,6 +55,16 @@ def spy(message):
         butlerBot.send_message(message.chat.id, "Sending video", reply_to_message_id=message.message_id)
         butlerBot.send_video(message.chat.id, vid, reply_to_message_id=message.message_id)
 
+@butlerBot.message_handler(commands=['getFitbitStat'])
+def getFitbitStat(message):
+    server.logger.debug(f"start message -> from {message.from_user.username} and chat_id -> {message.chat.id}")
+    if message.from_user.username=='steffistelegram' or message.from_user.username=='grumpyLad':
+        result = apiCalls.callFitbitGet()
+        butlerBot.send_message(message.chat.id, "```"+ result +"```", reply_to_message_id=message.message_id)
+    else:
+        butlerBot.send_message(message.chat.id, "Get fucked nerd. Its confidential", reply_to_message_id=message.message_id)
+
+
 """ @butlerBot.message_handler(commands=['sendnoodz'])
 @butlerBot.message_handler(func=lambda message: message.text.lower()=="send noodz" if isinstance(message.text, str) else ' ')
 def sendNoodz(message):
