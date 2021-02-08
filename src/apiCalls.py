@@ -1,14 +1,37 @@
 import requests
-import random
 from config import TeleConfig
-import html
+import datetime
+import formatter
 
-def callFitbitGet():
-    url = "https://api.fitbit.com/1/user/-/profile.json"
+def callFitbitUserGet(token):
+    url = f"https://api.fitbit.com/1/user/-/profile.json"
 
-    response = requests.get(url, headers={'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyMkM4UUMiLCJzdWIiOiI5NURHWTIiLCJpc3MiOiJGaXRiaXQiLCJ0eXAiOiJhY2Nlc3NfdG9rZW4iLCJzY29wZXMiOiJ3aHIgd251dCB3cHJvIHdzbGUgd3dlaSB3c29jIHdzZXQgd2FjdCB3bG9jIiwiZXhwIjoxNjEzMzA0MDc2LCJpYXQiOjE2MTI2OTkyODl9.fPseY-p1fHGo_B7ok4X5CWq-8eCZlo2hyk5zGkGJKP0'})
+    response = requests.get(url, headers={'Authorization': f'Bearer {token}'})
 
     if response.status_code == 200:
-        return response
+        return formatter.formatFitBitUserCall(response.content)
     else:
-        return "Error trying to get a response. Error code is " + response.status_code
+        return f"Error trying to get a response. Error code is {response.status_code}"
+
+
+def callFitbitFood(token):
+    date = datetime.datetime.now().strftime("%Y-%m-%d")
+    url = f"https://api.fitbit.com/1/user/-/foods/log/date/{date}.json"
+
+    response = requests.get(url, headers={'Authorization': f'Bearer {token}'})
+
+    if response.status_code == 200:
+        return formatter.formatFoodCall(response.content)
+    else:
+        return f"Error trying to get a response. Error code is {response.status_code}"
+
+def callFitbitActivity(token):
+   date = datetime.datetime.now().strftime("%Y-%m-%d")
+   url = f"https://api.fitbit.com/1/user/-/activities/date/{date}.json"
+
+   response = requests.get(url, headers={'Authorization': f'Bearer {token}'})
+
+   if response.status_code == 200:
+        return formatter.formatActivityCall(response.content)
+   else:
+        return f"Error trying to get a response. Error code is {response.status_code}"

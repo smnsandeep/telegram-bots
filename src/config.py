@@ -9,6 +9,7 @@ class Config(object):
     
 class AppConfig(object):
     PORT = os.environ.get('PORT', 5000)
+    BEARER_TOKEN = os.environ.get('BEARER_TOKEN', "")
 
 class TeleConfig(object):
     BOT_TOKEN = os.getenv("BUTLER_BOT_API", "")
