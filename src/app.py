@@ -128,6 +128,12 @@ def getFitbitSummary(message):
         messageString += apiCalls.callFeature(bearerToken, "floors")
         butlerBot.edit_message_text(text=messageString, chat_id=message.chat.id, message_id=messageId) 
 
+@butlerBot.message_handler(commands=['weather'])
+def getWeather(message):
+    server.logger.debug(f"start message -> from {message.from_user.username} and chat_id -> {message.chat.id}")
+
+
+
 
 #@butlerBot.message_handler(commands=['animateTrial'])
 #def animateTrial(message):

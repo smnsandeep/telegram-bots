@@ -59,3 +59,7 @@ def callFeature(token, feature):
         return formatter.formatFeatureCall(response.content, feature)
    else:
         return f"Error trying to get a response. Error code is {response.status_code}"
+
+
+def callWeatherApi(token, location):
+    url = f"api.openweathermap.org/data/2.5/weather?q={location}&appid={token}&units=metric&lang=en"
