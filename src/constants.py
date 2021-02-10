@@ -4,3 +4,9 @@ class Constants(object):
     /start - Start this bot
     /help - Show this help
     '''
+    shelp = '''Secret commands are as follows:
+    /getFitbitStat - Returns user data for groomp
+    /getFoodData - Returns food data for groomp
+    /getActData - Returns activity data for groomp
+    '''
+    notAuthorised="Get fucked nerd. Its confidential"

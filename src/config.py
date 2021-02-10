@@ -15,3 +15,9 @@ class TeleConfig(object):
     BOT_TOKEN = os.getenv("BUTLER_BOT_API", "")
     RES_PATH = os.path.join(os.getcwd(), "res")
     SPY_URL = os.getenv("SPY_URL", " ")
+
+class AuthConfig(object):
+    authUserList = {
+        "steffistelegram",
+        "grumpylad"
+    }
