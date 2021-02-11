@@ -28,11 +28,6 @@ def callFitbitFood(token):
 def callFitbitActivity(token):
    date = datetime.datetime.now().strftime("%Y-%m-%d")
 
-    #https://api.fitbit.com/1/user/-/activities/tracker/steps/date/today/1d.json
-    #https://api.fitbit.com/1/user/-/activities/tracker/calories/date/today/1d.json
-    #https://api.fitbit.com/1/user/-/activities/tracker/distance/date/today/1d.json
-    #https://api.fitbit.com/1/user/-/activities/tracker/floors/date/today/1d.json
-
    url = f"https://api.fitbit.com/1/user/-/activities/date/{date}.json"
 
    response = requests.get(url, headers={'Authorization': f'Bearer {token}'})
@@ -58,4 +53,23 @@ def callFeature(token, feature):
    if response.status_code == 200:
         return formatter.formatFeatureCall(response.content, feature)
    else:
+        return f"Error trying to get a response. Error code is {response.status_code}"
+
+
+def callWeatherApi(token, queryString):
+    if "," in queryString:
+        splitString = queryString.split(',')
+        try:
+            int(splitString[0])
+            url = f"http://api.openweathermap.org/data/2.5/weather?lat={splitString[0]}&lon={splitString[1]}&appid={token}&units=metric&lang=en"
+        except ValueError:
+            url = f"http://api.openweathermap.org/data/2.5/weather?q={splitString[0]},{splitString[1]}&appid={token}&units=metric&lang=en"
+    else:
+        url = f"http://api.openweathermap.org/data/2.5/weather?q={queryString}&appid={token}&units=metric&lang=en"
+
+    response = requests.get(url)
+
+    if response.status_code == 200:
+        return formatter.formatWeatherCall(response.content)
+    else:
         return f"Error trying to get a response. Error code is {response.status_code}"

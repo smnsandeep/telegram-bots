@@ -12,7 +12,7 @@ def formatFoodCall(response):
     summary = jsonRes["summary"]
     foodDict = jsonRes["foods"]
     cals = summary["calories"]
-    return f"Grompy ate {cals} cals in {len(foodDict)} meals today"
+    return f"Total calories consumed were {cals} cals in {len(foodDict)} meals"
 
 
 def formatActivityCall(response):
@@ -39,8 +39,21 @@ def formatFeatureCall(response, feature):
     if feature == "steps":
         return f"Total step count for today was - {value} steps"
     elif feature == "calories":
-        return f"Total calories consumed today was - {value} cals"
+        return f"Total calories burnt today was - {value} cals"
     elif feature == "distance":
-        return f"Total distance moved today was - {value} km"
+        return f"Total distance moved today was - {value:.2f} km"
     elif feature == "floors":
         return f"Total floors climbed today was - {value} floors"
+
+def formatWeatherCall(response):
+    res = json.loads(response)
+    name = res["name"]
+    sys = res["sys"]
+    country = sys["country"]
+
+    main = res["main"]
+    curTemp = main["temp"]
+    minTemp = main["temp_min"]
+    maxTemp = main["temp_max"]
+
+    return f"Weather for {name}, {country} :\n\nCurrent Temp : {curTemp} °C\nMin Temp: {minTemp} °C\nMax Temp: {maxTemp} °C"
