@@ -126,11 +126,17 @@ def getFitbitSummary(message):
         butlerBot.edit_message_text(text=messageString, chat_id=message.chat.id, message_id=messageId) 
 
         messageString += apiCalls.callFeature(bearerToken, "floors")
-        butlerBot.edit_message_text(text=messageString, chat_id=message.chat.id, message_id=messageId) 
+        butlerBot.edit_message_text(text=messageString, chat_id=message.chat.id, message_id=messageId)
+
+        messageString += apiCalls.callFitbitFood(bearerToken)
+        butlerBot.edit_message_text(text=messageString, chat_id=message.chat.id, message_id=messageId)
 
 @butlerBot.message_handler(commands=['weather'])
 def getWeather(message):
-    server.logger.debug(f"start message -> from {message.from_user.username} and chat_id -> {message.chat.id}")
+    server.logger.debug(f"start message -> from {message.from_user.username} and chat_id -> {message.chat.id} and message was {message.text}")
+    requestStr = message.text.replace("/weather ", "")
+    weatherResponseString = apiCalls.callWeatherApi(AppConfig.WEATHER_TOKEN, requestStr)
+    butlerBot.send_message(message.chat.id, weatherResponseString, reply_to_message_id=message.message_id)
 
 
 
