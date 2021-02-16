@@ -42,7 +42,7 @@ def formatFeatureCall(response, feature):
         return f"Total calories burnt today was - {value} cals"
     elif feature == "distance":
         value = value.split('.')
-        valStr = value[0] + value[1][0:2]
+        valStr = value[0] + "."+ value[1][0:2]
         return f"Total distance moved today was - {valStr} km"
     elif feature == "floors":
         return f"Total floors climbed today was - {value} floors"
