@@ -125,7 +125,7 @@ def getFitbitSummary(message):
         messageString += apiCalls.callFeature(bearerToken, "distance") + "\n"
         butlerBot.edit_message_text(text=messageString, chat_id=message.chat.id, message_id=messageId) 
 
-        messageString += apiCalls.callFeature(bearerToken, "floors")
+        messageString += apiCalls.callFeature(bearerToken, "floors") + "\n"
         butlerBot.edit_message_text(text=messageString, chat_id=message.chat.id, message_id=messageId)
 
         messageString += apiCalls.callFitbitFood(bearerToken)
