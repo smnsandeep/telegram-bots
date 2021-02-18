@@ -155,8 +155,12 @@ def ban(message):
             try:
                 butlerBot.kick_chat_member(message.chat.id, userId,0)
                 butlerBot.send_message(message.chat.id, f"{message.reply_to_message.from_user.username} successfully banned")
-            except telebot.apihelper.ApiException:
-                butlerBot.send_message(message.chat.id, "Something went wrong", reply_to_message_id=message.message_id)
+            except telebot.apihelper.ApiException as e:
+                resStr = str(e).split("Response body:")[1][4:-2]
+                resLoad = json.dumps(resStr)
+                print(resLoad)
+                resJson = json.loads(resLoad)
+                print(resJson)
 
 
 
