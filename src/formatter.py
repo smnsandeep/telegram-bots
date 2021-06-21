@@ -52,10 +52,15 @@ def formatWeatherCall(response):
     name = res["name"]
     sys = res["sys"]
     country = sys["country"]
+    weatherArr = res["weather"][0]
+    currSituation = weatherArr["description"]
+
 
     main = res["main"]
     curTemp = main["temp"]
     minTemp = main["temp_min"]
     maxTemp = main["temp_max"]
+    feelsLike = main["feels_like"]
 
-    return f"Weather for {name}, {country} :\n\nCurrent Temp : {curTemp} °C\nMin Temp: {minTemp} °C\nMax Temp: {maxTemp} °C"
+
+    return f"Weather for {name}, {country} :\n\nCurrent Temp : {curTemp} °C\nMin Temp: {minTemp} °C\nMax Temp: {maxTemp} °C.\nFeels like: {feelsLike} °C\n\nThe current weather condition is: {currSituation}"
