@@ -140,15 +140,38 @@ def getWeather(message):
 
 
 
+@butlerBot.message_handler(commands=['ban'])
+def ban(message):
+    server.logger.debug(f"start message -> from {message.from_user.username} and chat_id -> {message.chat.id} and message was {message.text}")
+    #print(message)
+    if(message.from_user.username not in AuthConfig.authUserList):
+        butlerBot.send_message(message.chat.id, "Not allowed", reply_to_message_id=message.message_id)
+    else:
+        userId = ""
+        if message.reply_to_message == None:
+            butlerBot.send_message(message.chat.id, Constants.banNoMessage, reply_to_message_id=message.message_id) 
+        else:
+            userId = message.reply_to_message.from_user.id
+            try:
+                butlerBot.kick_chat_member(message.chat.id, userId,0)
+                butlerBot.send_message(message.chat.id, f"{message.reply_to_message.from_user.username} successfully banned")
+            except telebot.apihelper.ApiException as e:
+                resStr = str(e).split("Response body:")[1][4:-2]
+                resLoad = json.dumps(resStr)
+                print(resLoad)
+                resJson = json.loads(resLoad)
+                print(resJson)
 
-#@butlerBot.message_handler(commands=['animateTrial'])
-#def animateTrial(message):
-#    s = "."
-#    reply = butlerBot.send_message(message.chat.id, s)
-#    for i in range(10):
-#        time.sleep(1)
-#        s += "."
-#        butlerBot.edit_message_text(text=s, chat_id=message.chat.id, message_id=reply.message_id)
+
+@butlerBot.message_handler(commands=['forex'])
+def forex(message):
+    server.logger.debug(f"start message -> from {message.from_user.username} and chat_id -> {message.chat.id} and message was {message.text}")
+    requestStr = message.text.replace("/forex ", "")
+    forexResponseString = apiCalls.callForexAPI(AppConfig.FOREX_API, requestStr)
+    butlerBot.send_message(message.chat.id, forexResponseString, reply_to_message_id=message.message_id)
+
+
+
 
 if __name__ == "__main__":
     server.debug=True

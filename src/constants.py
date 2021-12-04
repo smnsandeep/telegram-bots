@@ -10,3 +10,4 @@ class Constants(object):
     /getActData - Returns activity data for groomp
     '''
     notAuthorised="Get fucked nerd. Its confidential"
+    banNoMessage="Please reply to a message to ban that user"
