@@ -167,7 +167,7 @@ def ban(message):
 def forex(message):
     server.logger.debug(f"start message -> from {message.from_user.username} and chat_id -> {message.chat.id} and message was {message.text}")
     requestStr = message.text.replace("/forex ", "")
-    forexResponseString = apiCalls.callForexAPI(AppConfig.FOREX_API, requestStr)
+    forexResponseString = apiCalls.callForexAPI(AppConfig.FOREX_TOKEN, requestStr)
     butlerBot.send_message(message.chat.id, forexResponseString, reply_to_message_id=message.message_id)
 
 
