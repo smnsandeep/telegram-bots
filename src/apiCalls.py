@@ -2,6 +2,8 @@ import requests
 from config import TeleConfig
 import datetime
 import formatter
+import numbers
+import sys
 
 def callFitbitUserGet(token):
     url = f"https://api.fitbit.com/1/user/-/profile.json"
@@ -73,3 +75,26 @@ def callWeatherApi(token, queryString):
         return formatter.formatWeatherCall(response.content)
     else:
         return f"Error trying to get a response. Error code is {response.status_code}"
+
+def callForexAPI(token, queryString):
+    splitString = queryString.split(' ')
+    amount = splitString[0]
+
+    #print(amount, file=sys.stdout)
+
+    if(not isinstance(amount, numbers.Integral) and isinstance(amount, float)):
+        return f"Amount needs to be a number"
+
+    baseCurrency = splitString[1]
+    targetCurrency= splitString[2]
+
+    url = f"https://freecurrencyapi.net/api/v2/latest?apikey={token}&base_currency={baseCurrency}"
+
+    response = requests.get(url)
+
+    if(response.status_code==200):
+        return formatter.formatCurrency(response.content, amount, baseCurrency, targetCurrency)
+    else:
+        return f"Error trying to get a response. Error code is {response.status_code}"
+
+

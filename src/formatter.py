@@ -1,4 +1,5 @@
 import json
+import sys
 
 def formatFitBitUserCall(response):
     userJson = json.loads(response)
@@ -64,3 +65,18 @@ def formatWeatherCall(response):
 
 
     return f"Weather for {name}, {country} :\n\nCurrent Temp : {curTemp} °C\nMin Temp: {minTemp} °C\nMax Temp: {maxTemp} °C.\nFeels like: {feelsLike} °C\n\nThe current weather condition is: {currSituation}"
+
+def formatCurrency(response, amount, baseCurrency, targetCurrency):
+    try:
+        res = json.loads(response)
+        data = res["data"]
+
+        if(targetCurrency not in data):
+            return f"{targetCurrency} not found"
+
+        multiplier = data[targetCurrency]
+        result = float(amount) * multiplier
+
+        return f"{amount} {baseCurrency} is approximately {round(result,2)} {targetCurrency}"
+    except Exception as e:
+        return f"Base currency {baseCurrency} is not a valid currency."
