@@ -1,6 +1,8 @@
 import json
 import sys
 
+from telebot.types import Location
+
 def formatFitBitUserCall(response):
     userJson = json.loads(response)
     weight = userJson["weight"]
@@ -80,3 +82,50 @@ def formatCurrency(response, amount, baseCurrency, targetCurrency):
         return f"{amount} {baseCurrency} is approximately {round(result,2)} {targetCurrency}"
     except Exception as e:
         return f"Base currency {baseCurrency} is not a valid currency."
+
+
+def formatGeocoder(response):
+    try:
+        res = json.loads(response)
+        results = res["results"]
+        result = results[0]
+        locations = result["locations"]
+        location = locations[0]
+
+        geocodeQualityCode = location["geocodeQualityCode"]
+        geocodeQuality = location["geocodeQuality"]
+
+        latLng = location["latLng"]
+        lat = latLng["lat"]
+        lng = latLng["lng"]
+
+        if(geocodeQualityCode[0] != "A"):
+            print("Geocode approx")
+            return f"{lat} {lng} approx"
+        else:
+            print("Geocode no approx")
+            return f"{lat} {lng}"    
+
+    except Exception as e:
+        #print("Geocode format failed")
+        #print(e)
+        return f"Error !!!"
+
+def formatTime(place, response, isApproximate):
+    try:
+        res = json.loads(response)
+
+        time = res["time"]
+        month = res["month"]
+        year = res["year"]
+        day = res["day"]
+        dow = res["dayOfWeek"]
+
+        #return f"The current time for {place} is {dow}, {day}/{month}/{year}, {time}. "
+        if(isApproximate):
+            return f"The current time for {place} is {dow}, {day}/{month}/{year}, {time}."
+        else:
+            return f"The current time for {place} is {dow}, {day}/{month}/{year}, {time}."
+    except Exception as e:
+        print(e)
+        return f"Error !!!"

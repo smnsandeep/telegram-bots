@@ -1,4 +1,5 @@
 import requests
+from werkzeug.wrappers import response
 from config import TeleConfig
 import datetime
 import formatter
@@ -96,5 +97,46 @@ def callForexAPI(token, queryString):
         return formatter.formatCurrency(response.content, amount, baseCurrency, targetCurrency)
     else:
         return f"Error trying to get a response. Error code is {response.status_code}"
+
+
+
+def callGeoCodingAPI(token, queryString):
+    url = f"http://open.mapquestapi.com/geocoding/v1/address?key={token}&location={queryString}&maxResults=1&thumbMaps=false"
+
+    response = requests.get(url)
+    if(response.status_code==200):
+        print("Geocoding success")
+        formattedLatLong = formatter.formatGeocoder(response.content)
+        print(f"Formatted is {formattedLatLong}")
+        result = callTimeAPI(formattedLatLong, queryString)
+        return result
+    else:
+        print("Geocoding failed")
+        return f"Error trying to get a response. Error code is {response.status_code}"
+
+
+def callTimeAPI(response, place):
+    #print(f"Response is {response}")
+    split = response.split(' ')
+    if(split[0] == "error"):
+        print("Error")
+        return response
+    else:
+        print("In time api")
+        splitString = response.split(' ')
+
+        lat = splitString[0]
+        longi = splitString[1]
+
+        url = f"https://www.timeapi.io/api/Time/current/coordinate?latitude={lat}&longitude={longi}"
+
+        response = requests.get(url)
+
+        if(response.status_code==200):
+            print("Time success")
+            return formatter.formatTime(place, response.content, len(splitString) == 3)
+        else:
+            print("Time fail")
+            return f"Error trying to get a response. Error code is {response.status_code}"
 
 

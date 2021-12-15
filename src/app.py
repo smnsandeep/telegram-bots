@@ -8,6 +8,7 @@ import datetime
 import requests
 import time
 import json
+import asyncio
 
 butlerBot = telebot.TeleBot(TeleConfig.BOT_TOKEN)
 
@@ -171,6 +172,12 @@ def forex(message):
     butlerBot.send_message(message.chat.id, forexResponseString, reply_to_message_id=message.message_id)
 
 
+@butlerBot.message_handler(commands=['currentTime'])
+def currentTime(message):
+    server.logger.debug(f"start message -> from {message.from_user.username} and chat_id -> {message.chat.id} and message was {message.text}")
+    requestStr = message.text.replace("/currentTime ", "")
+    currentTimeResponseString = apiCalls.callGeoCodingAPI(AppConfig.GEOCODING_TOKEN, requestStr)
+    butlerBot.send_message(message.chat.id, currentTimeResponseString, reply_to_message_id=message.message_id)
 
 
 if __name__ == "__main__":
