@@ -172,10 +172,10 @@ def forex(message):
     butlerBot.send_message(message.chat.id, forexResponseString, reply_to_message_id=message.message_id)
 
 
-@butlerBot.message_handler(commands=['currentTime'])
+@butlerBot.message_handler(commands=['time'])
 def currentTime(message):
     server.logger.debug(f"start message -> from {message.from_user.username} and chat_id -> {message.chat.id} and message was {message.text}")
-    requestStr = message.text.replace("/currentTime ", "")
+    requestStr = message.text.replace("/time ", "")
     currentTimeResponseString = apiCalls.callGeoCodingAPI(AppConfig.GEOCODING_TOKEN, requestStr)
     butlerBot.send_message(message.chat.id, currentTimeResponseString, reply_to_message_id=message.message_id)
 
