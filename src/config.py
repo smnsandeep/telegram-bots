@@ -24,3 +24,7 @@ class AuthConfig(object):
         "steffistelegram",
         "grumpylad"
     }
+
+    banUserList = {
+        "Vara202"
+    }
