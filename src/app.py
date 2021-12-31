@@ -1,4 +1,4 @@
-from flask import Flask, config, request
+from flask import Flask, request
 from config import Config, TeleConfig, AppConfig, AuthConfig
 import telebot
 from constants import Constants
