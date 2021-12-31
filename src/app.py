@@ -17,6 +17,14 @@ server.config.from_object(Config)
 
 bearerToken = AppConfig.BEARER_TOKEN
 
+def checkForBan(userName, chatId, replyToMessage):
+    if(userName in AuthConfig.banUserList):
+        server.logger.debug(f"Banned user {userName}")
+        butlerBot.send_message(chatId, "You are not authorised to use this service", reply_to_message_id=replyToMessage)
+        return True
+    else:
+        return False
+
 @server.route('/', methods=['POST'])
 def webhook():
     print(request)
@@ -33,23 +41,6 @@ def getMessage():
     requestString = request.stream.read().decode("utf-8")
     server.logger.debug(f"Incoming message -> {requestString}")
 
-    messageJson = json.loads(requestString)
-    messageBody = messageJson["message"]
-    
-    
-    messageId = messageBody["message_id"]
-    
-    
-    msgFrom = messageBody["from"]
-
-    chatBody = messageBody["chat"]
-    chatId = chatBody["id"]
-    userName= msgFrom["username"]
-    if(userName in AuthConfig.banUserList):
-        server.logger.debug(f"Banned user {userName}")
-        butlerBot.send_message(chatId, "You are not authorised to use this service", reply_to_message_id=messageId)
-        return "!", 200
-
     butlerBot.process_new_updates([telebot.types.Update.de_json(requestString)])
     
     return "!", 200
@@ -57,11 +48,19 @@ def getMessage():
 @butlerBot.message_handler(commands=['start'])
 def start(message):
     server.logger.debug(f"start message -> from {message.from_user.username} and chat_id -> {message.chat.id}")
+
+    if(checkForBan(message.from_user.username, message.chat.id, message.message_id)):
+        return
+
     butlerBot.send_message(message.chat.id, Constants.greeting.format(message.from_user.first_name))
 
 @butlerBot.message_handler(commands=['help'])
 def help(message):
     server.logger.debug(f"start message -> from {message.from_user.username} and chat_id -> {message.chat.id}")
+
+    if(checkForBan(message.from_user.username, message.chat.id, message.message_id)):
+            return
+
     returnMessage = Constants.help
     butlerBot.send_message(message.chat.id, returnMessage)
 
@@ -69,6 +68,10 @@ def help(message):
 @butlerBot.message_handler(commands=['shelp'])
 def help(message):
     server.logger.debug(f"start message -> from {message.from_user.username} and chat_id -> {message.chat.id}")
+
+    if(checkForBan(message.from_user.username, message.chat.id, message.message_id)):
+        return
+
     if(message.from_user.username in AuthConfig.authUserList):
         result = Constants.shelp
         butlerBot.send_message(message.chat.id, result, reply_to_message_id=message.message_id)
@@ -153,6 +156,10 @@ def getFitbitSummary(message):
 @butlerBot.message_handler(commands=['weather'])
 def getWeather(message):
     server.logger.debug(f"start message -> from {message.from_user.username} and chat_id -> {message.chat.id} and message was {message.text}")
+
+    if(checkForBan(message.from_user.username, message.chat.id, message.message_id)):
+        return
+
     requestStr = message.text.replace("/weather ", "")
     weatherResponseString = apiCalls.callWeatherApi(AppConfig.WEATHER_TOKEN, requestStr)
     butlerBot.send_message(message.chat.id, weatherResponseString, reply_to_message_id=message.message_id)
@@ -162,6 +169,10 @@ def getWeather(message):
 @butlerBot.message_handler(commands=['ban'])
 def ban(message):
     server.logger.debug(f"start message -> from {message.from_user.username} and chat_id -> {message.chat.id} and message was {message.text}")
+
+    if(checkForBan(message.from_user.username, message.chat.id, message.message_id)):
+        return
+
     #print(message)
     if(message.from_user.username not in AuthConfig.authUserList):
         butlerBot.send_message(message.chat.id, "Not allowed", reply_to_message_id=message.message_id)
@@ -185,6 +196,11 @@ def ban(message):
 @butlerBot.message_handler(commands=['forex'])
 def forex(message):
     server.logger.debug(f"start message -> from {message.from_user.username} and chat_id -> {message.chat.id} and message was {message.text}")
+
+
+    if(checkForBan(message.from_user.username, message.chat.id, message.message_id)):
+        return
+
     requestStr = message.text.replace("/forex ", "")
     forexResponseString = apiCalls.callForexAPI(AppConfig.FOREX_TOKEN, requestStr)
     butlerBot.send_message(message.chat.id, forexResponseString, reply_to_message_id=message.message_id)
@@ -193,6 +209,11 @@ def forex(message):
 @butlerBot.message_handler(commands=['time'])
 def currentTime(message):
     server.logger.debug(f"start message -> from {message.from_user.username} and chat_id -> {message.chat.id} and message was {message.text}")
+
+
+    if(checkForBan(message.from_user.username, message.chat.id, message.message_id)):
+        return
+
     requestStr = message.text.replace("/time ", "")
     currentTimeResponseString = apiCalls.callGeoCodingAPI(AppConfig.GEOCODING_TOKEN, requestStr)
     butlerBot.send_message(message.chat.id, currentTimeResponseString, reply_to_message_id=message.message_id)
