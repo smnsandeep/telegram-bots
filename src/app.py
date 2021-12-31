@@ -31,7 +31,25 @@ def fitbitWebhook():
 @server.route('/'+TeleConfig.BOT_TOKEN, methods=['POST'])
 def getMessage():
     requestString = request.stream.read().decode("utf-8")
-    #server.logger.debug(f"Incoming message -> {requestString}")
+    server.logger.debug(f"Incoming message -> {requestString}")
+
+    messageJson = json.loads(requestString)
+    messageBody = messageJson["message"]
+    
+    
+    messageId = messageBody["message_id"]
+    
+    
+    msgFrom = messageBody["from"]
+
+    chatBody = messageBody["chat"]
+    chatId = chatBody["id"]
+    userName= msgFrom["username"]
+    if(userName in AuthConfig.banUserList):
+        server.logger.debug(f"Banned user {userName}")
+        butlerBot.send_message(chatId, "You are not authorised to use this service", reply_to_message_id=messageId)
+        return "!", 200
+
     butlerBot.process_new_updates([telebot.types.Update.de_json(requestString)])
     
     return "!", 200
