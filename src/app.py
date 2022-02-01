@@ -9,6 +9,7 @@ import requests
 import time
 import json
 import asyncio
+import storageHelper
 
 butlerBot = telebot.TeleBot(TeleConfig.BOT_TOKEN)
 
@@ -16,6 +17,13 @@ server = Flask(__name__)
 server.config.from_object(Config)
 
 bearerToken = AppConfig.BEARER_TOKEN
+
+def isOwner(username):
+    if(username == AppConfig.OWNER_NAME):
+        return True
+
+    return False
+
 
 def checkForBan(userName, chatId, replyToMessage):
     if(userName in AuthConfig.banUserList):
@@ -218,6 +226,53 @@ def currentTime(message):
     currentTimeResponseString = apiCalls.callGeoCodingAPI(AppConfig.GEOCODING_TOKEN, requestStr)
     butlerBot.send_message(message.chat.id, currentTimeResponseString, reply_to_message_id=message.message_id)
 
+@butlerBot.message_handler(commands=['addToExpense'])
+def addToExpense(message):
+    server.logger.debug(f"start message -> from {message.from_user.username} and chat_id -> {message.chat.id} and message was {message.text}")
+    resString = "Only grumpy is allowed to add to Expense"
+    if(not isOwner(message.from_user.username)):
+        butlerBot.send_message(message.chat.id, resString, reply_to_message_id=message.message_id)
+        return
+    totalBal = int(storageHelper.getCurrentBal())
+    try:
+        expense = int(message.text.replace("/addToExpense ",""))
+        updatedBal = totalBal - expense
+        storageHelper.updateBal(updatedBal)
+        resString = f"Expense of INR {expense} noted. Updated Balance is {updatedBal}"
+        butlerBot.send_message(message.chat.id, resString, reply_to_message_id=message.message_id)
+    except Exception as e:
+        resString = "The balance must be a number"
+        butlerBot.send_message(message.chat.id, resString, reply_to_message_id=message.message_id)
+
+@butlerBot.message_handler(commands=['resetBalance'])
+def addToExpense(message):
+    server.logger.debug(f"start message -> from {message.from_user.username} and chat_id -> {message.chat.id} and message was {message.text}")
+    resString = "Only grumpy is allowed to add to Expense"
+    if(not isOwner(message.from_user.username)):
+        butlerBot.send_message(message.chat.id, resString, reply_to_message_id=message.message_id)
+        return
+
+    try:
+        newBal = int(message.text.replace("/resetBalance ",""))
+        storageHelper.updateBal(newBal)
+        resString = f"New Balance of {newBal} is noted."
+        butlerBot.send_message(message.chat.id, resString, reply_to_message_id=message.message_id)
+    except Exception as e:
+        resString = "Error in writing new Balance"
+        butlerBot.send_message(message.chat.id, resString, reply_to_message_id=message.message_id)
+        
+
+
+
+
+    
+
+@butlerBot.message_handler(commands="getTotalExpense")
+def getTotalExpense(message):
+    server.logger.debug(f"start message -> from {message.from_user.username} and chat_id -> {message.chat.id} and message was {message.text}")
+    totalBal = storageHelper.getCurrentBal()
+    resString = f"The total expense is {10000 - int(totalBal)}.\nThe total remaining balance is INR {totalBal}."
+    butlerBot.send_message(message.chat.id, resString, reply_to_message_id=message.message_id)
 
 if __name__ == "__main__":
     server.debug=True
