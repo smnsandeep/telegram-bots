@@ -27,5 +27,6 @@ class AuthConfig(object):
     }
 
     banUserList = {
-        "Vara202"
+        "Vara202",
+        "ChaosAndMe"
     }
